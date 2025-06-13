@@ -2,8 +2,9 @@
 
 import { useState, useEffect, useCallback } from "react"
 import { medicalFacts } from "../data/medicalFacts"
+import { supabase } from "../../lib/supabaseClient"
 
-export const useGameState = () => {
+export const useGameState = (paused = false) => {
   const [currentFactIndex, setCurrentFactIndex] = useState(0)
   const [streak, setStreak] = useState(0)
   const [score, setScore] = useState(0)
@@ -13,6 +14,73 @@ export const useGameState = () => {
   const [showExplanation, setShowExplanation] = useState(false)
   const [dailyExplanations, setDailyExplanations] = useState(0)
   const [isSubscribed, setIsSubscribed] = useState(false)
+  const [user, setUser] = useState(null)
+  const [highestStreak, setHighestStreak] = useState(null)
+
+  // Load user and highest streak
+  useEffect(() => {
+    const getSessionAndStreak = async () => {
+      const { data: { session }, error } = await supabase.auth.getSession();
+      if (session) {
+        setUser(session.user);
+        // Fetch highest streak for the user
+        const { data, error: fetchError } = await supabase
+          .from('profiles')
+          .select('highest_streak')
+          .eq('id', session.user.id)
+          .single();
+
+        if (data) {
+          setHighestStreak(data.highest_streak);
+        } else if (fetchError && fetchError.code === 'PGRST116') {
+          // No profile found, create one
+          const { error: insertError } = await supabase
+            .from('profiles')
+            .insert({ id: session.user.id, highest_streak: 0 });
+          if (insertError) console.error('Error creating profile:', insertError.message);
+          setHighestStreak(0);
+        } else if (fetchError) {
+          console.error('Error fetching highest streak:', fetchError.message);
+        }
+      } else if (error) {
+        console.error('Error getting session:', error.message);
+      }
+    };
+
+    getSessionAndStreak();
+
+    const { data: authListener } = supabase.auth.onAuthStateChange(async (_event, session) => {
+      if (session) {
+        setUser(session.user);
+        // Fetch highest streak for the user
+        const { data, error: fetchError } = await supabase
+          .from('profiles')
+          .select('highest_streak')
+          .eq('id', session.user.id)
+          .single();
+
+        if (data) {
+          setHighestStreak(data.highest_streak);
+        } else if (fetchError && fetchError.code === 'PGRST116') {
+          // No profile found, create one
+          const { error: insertError } = await supabase
+            .from('profiles')
+            .insert({ id: session.user.id, highest_streak: 0 });
+          if (insertError) console.error('Error creating profile:', insertError.message);
+          setHighestStreak(0);
+        } else if (fetchError) {
+          console.error('Error fetching highest streak:', fetchError.message);
+        }
+      } else {
+        setUser(null);
+        setHighestStreak(null);
+      }
+    });
+
+    return () => {
+      authListener.subscription.unsubscribe();
+    };
+  }, []);
 
   // Load saved state
   useEffect(() => {
@@ -42,7 +110,7 @@ export const useGameState = () => {
 
   // Timer
   useEffect(() => {
-    if (gameState !== "playing" || userAnswer !== null) return
+    if (gameState !== "playing" || userAnswer !== null || paused) return
 
     if (timeLeft <= 0) {
       setGameState("gameOver")
@@ -54,7 +122,7 @@ export const useGameState = () => {
     }, 1000)
 
     return () => clearTimeout(timer)
-  }, [timeLeft, gameState, userAnswer])
+  }, [timeLeft, gameState, userAnswer, paused])
 
   const handleAnswer = useCallback(
     (answer) => {
@@ -73,9 +141,21 @@ export const useGameState = () => {
         setStreak((prev) => prev + 1)
       } else {
         setGameState("gameOver")
+        // Update highest streak on game over if user is logged in and new streak is higher
+        if (user && streak > highestStreak) {
+          const updateHighestStreak = async () => {
+            const { error } = await supabase
+              .from('profiles')
+              .update({ highest_streak: streak })
+              .eq('id', user.id);
+            if (error) console.error('Error updating highest streak:', error.message);
+            else setHighestStreak(streak);
+          };
+          updateHighestStreak();
+        }
       }
     },
-    [userAnswer, currentFactIndex, timeLeft, score],
+    [userAnswer, currentFactIndex, timeLeft, score, user, streak, highestStreak],
   )
 
   const nextFact = useCallback(() => {
@@ -120,6 +200,8 @@ export const useGameState = () => {
     showExplanation,
     dailyExplanations,
     isSubscribed,
+    user,
+    highestStreak,
     handleAnswer,
     nextFact,
     resetGame,

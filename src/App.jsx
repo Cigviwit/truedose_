@@ -11,8 +11,10 @@ import SwipeContainer from "./components/SwipeContainer"
 import SubscriptionModal from "./components/SubscriptionModal"
 import { medicalFacts } from "./data/medicalFacts"
 import { useGameState } from "./hooks/useGameState"
+import { useRouter } from "next/navigation"
 
 function App() {
+  const [paused, setPaused] = useState(false)
   const {
     currentFactIndex,
     streak,
@@ -23,18 +25,26 @@ function App() {
     showExplanation,
     dailyExplanations,
     isSubscribed,
+    user,
+    highestStreak,
     handleAnswer,
     nextFact,
     resetGame,
     toggleSubscription,
     setShowExplanation,
-  } = useGameState()
+  } = useGameState(paused)
 
   const [showSubscriptionModal, setShowSubscriptionModal] = useState(false)
   const [showInstallPrompt, setShowInstallPrompt] = useState(false)
 
   const currentFact = medicalFacts[currentFactIndex]
   const speedBonus = timeLeft > 10 ? 50 : timeLeft > 5 ? 25 : 0
+
+  const router = useRouter();
+
+  const handleQuit = () => {
+    router.replace('/landing');
+  };
 
   // PWA Install Prompt
   useEffect(() => {
@@ -72,6 +82,12 @@ function App() {
     }
   }
 
+  // Freeze timer when paused
+  useEffect(() => {
+    if (!paused) return
+    // No-op: timer is managed in useGameState, but we can block input and overlay
+  }, [paused])
+
   return (
     <div
       className="h-screen w-screen bg-gradient-to-br from-purple-600 via-pink-600 to-red-600 flex flex-col relative overflow-hidden"
@@ -81,6 +97,31 @@ function App() {
         maxHeight: "100vh",
       }}
     >
+      {/* Pause Overlay */}
+      <AnimatePresence>
+        {paused && (
+          <motion.div
+            key="pause-overlay"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed inset-0 z-50 flex items-center justify-center"
+            style={{
+              backdropFilter: "blur(3px) grayscale(0.7)",
+            }}
+          >
+            <button
+              onClick={() => setPaused(false)}
+              className="bg-white/80 px-8 py-4 rounded-2xl text-xl font-bold shadow-2xl border border-white/40 backdrop-blur-md hover:bg-white"
+              style={{backdropFilter: 'blur(8px)'}}
+            >
+              Resume
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Install Prompt */}
       <AnimatePresence>
         {showInstallPrompt && (
@@ -109,16 +150,16 @@ function App() {
       </AnimatePresence>
 
       {/* Timer Bar */}
-      {gameState === "playing" && <TimerBar timeLeft={timeLeft} />}
+      {gameState === "playing" && !paused && <TimerBar timeLeft={timeLeft} />}
 
       {/* Main Game Area */}
       <div className="flex-1 flex flex-col min-h-0" style={{ minHeight: 0 }}>
         <AnimatePresence mode="wait">
-          {gameState === "playing" && (
+          {gameState === "playing" && !paused && (
             <SwipeContainer key="game">
               <FactCard
                 fact={currentFact}
-                onAnswer={handleAnswer}
+                onAnswer={paused ? () => {} : handleAnswer}
                 userAnswer={userAnswer}
                 timeLeft={timeLeft}
                 speedBonus={speedBonus}
@@ -128,7 +169,15 @@ function App() {
           )}
 
           {gameState === "gameOver" && (
-            <GameOverScreen key="gameOver" streak={streak} score={score} onRestart={resetGame} />
+            <GameOverScreen
+              key="gameOver"
+              streak={streak}
+              score={score}
+              onRestart={resetGame}
+              isSubscribed={isSubscribed}
+              user={user}
+              highestStreak={highestStreak}
+            />
           )}
         </AnimatePresence>
       </div>
@@ -139,8 +188,8 @@ function App() {
           streak={streak}
           score={score}
           speedBonus={speedBonus}
-          dailyExplanations={dailyExplanations}
-          isSubscribed={isSubscribed}
+          onPause={() => setPaused(true)}
+          onQuit={handleQuit}
         />
       )}
 

@@ -11,7 +11,7 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["Inter", "system-ui", "sans-serif"],
+        sans: ["Satoshi", "Arial", "Helvetica", "sans-serif"],
       },
       animation: {
         "bounce-in": "bounceIn 0.6s ease-out",

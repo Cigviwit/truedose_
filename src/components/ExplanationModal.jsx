@@ -101,8 +101,8 @@ const ExplanationModal = ({ isOpen, onClose, fact, onNext, onExplanationRequest,
               <div className="mb-3">
                 <div className="text-gray-700 text-xs font-semibold mb-2">Explanation:</div>
                 {canViewExplanation ? (
-                  <div className="bg-blue-50 rounded-lg p-3 border border-blue-100">
-                    <div className="text-gray-800 text-xs leading-relaxed">{fact.explanation}</div>
+                  <div className="rounded-2xl p-4 border border-blue-200/40 bg-blue-100/30 shadow-xl backdrop-blur-2xl" style={{backdropFilter: 'blur(14px) saturate(180%)', boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.18)'}}>
+                    <div className="text-gray-800 text-base leading-relaxed font-medium">{fact.explanation}</div>
                   </div>
                 ) : (
                   <div className="bg-gray-50 rounded-lg p-3 text-center border border-gray-200">
