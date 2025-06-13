@@ -32,12 +32,12 @@ function App() {
     resetGame,
     toggleSubscription,
     setShowExplanation,
+    currentFact,
   } = useGameState(paused)
 
   const [showSubscriptionModal, setShowSubscriptionModal] = useState(false)
   const [showInstallPrompt, setShowInstallPrompt] = useState(false)
 
-  const currentFact = medicalFacts[currentFactIndex]
   const speedBonus = timeLeft > 10 ? 50 : timeLeft > 5 ? 25 : 0
 
   const router = useRouter();

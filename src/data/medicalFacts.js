@@ -1,137 +1,162 @@
 export const medicalFacts = [
   {
     id: 1,
-    statement: "The human heart has four chambers.",
+    statement: "The SA node is the primary pacemaker of the heart.",
     correct: true,
     category: "Cardiology",
-    explanation:
-      "The human heart consists of four chambers: two atria (left and right) and two ventricles (left and right). The atria receive blood returning to the heart, while the ventricles pump blood out of the heart.",
-    source: "Gray's Anatomy",
+    explanation: "The sinoatrial (SA) node initiates electrical impulses in the heart and sets the pace for cardiac rhythm. It is located in the right atrium near the superior vena cava.",
+    source: "Guyton and Hall Textbook of Medical Physiology, 14th Edition"
   },
   {
     id: 2,
-    statement: "Antibiotics are effective against viral infections.",
+    statement: "Beta-lactam antibiotics inhibit bacterial protein synthesis.",
     correct: false,
     category: "Pharmacology",
-    explanation:
-      "Antibiotics are only effective against bacterial infections, not viral infections. Viruses have different structures and replication mechanisms that are not affected by antibiotics.",
-    source: "Principles of Internal Medicine",
+    explanation: "Beta-lactam antibiotics inhibit bacterial cell wall synthesis by binding to penicillin-binding proteins. Protein synthesis inhibitors include drugs like macrolides and aminoglycosides.",
+    source: "Goodman & Gilman's The Pharmacological Basis of Therapeutics, 13th Edition"
   },
   {
     id: 3,
-    statement: "The liver is the largest internal organ in the human body.",
+    statement: "The cerebellum is involved in maintaining balance and coordinating voluntary movements.",
     correct: true,
-    category: "Anatomy",
-    explanation:
-      "The liver is indeed the largest internal organ, weighing approximately 1.5 kg in adults. It performs over 500 vital functions including detoxification, protein synthesis, and bile production.",
-    source: "Netter's Atlas of Human Anatomy",
+    category: "Neurology",
+    explanation: "The cerebellum plays a crucial role in motor coordination, precision, and balance. It integrates sensory inputs and fine-tunes motor activity.",
+    source: "Snell's Clinical Neuroanatomy, 8th Edition"
   },
   {
     id: 4,
-    statement: "Type 1 diabetes is caused by insulin resistance.",
+    statement: "Graves' disease is a form of hypothyroidism.",
     correct: false,
     category: "Endocrinology",
-    explanation:
-      "Type 1 diabetes is caused by autoimmune destruction of pancreatic beta cells, leading to insulin deficiency. Type 2 diabetes is primarily caused by insulin resistance.",
-    source: "Williams Textbook of Endocrinology",
+    explanation: "Graves' disease is an autoimmune disorder that causes hyperthyroidism due to the stimulation of TSH receptors by autoantibodies. It results in increased thyroid hormone production.",
+    source: "Williams Textbook of Endocrinology, 14th Edition"
   },
   {
     id: 5,
-    statement: "The normal human body temperature is 98.6°F (37°C).",
+    statement: "The P wave on an ECG represents atrial depolarization.",
     correct: true,
-    category: "Physiology",
-    explanation:
-      "The average normal human body temperature is 98.6°F (37°C), though it can vary slightly between individuals and throughout the day.",
-    source: "Guyton and Hall Textbook of Medical Physiology",
+    category: "Cardiology",
+    explanation: "The P wave reflects the electrical activity of atrial depolarization preceding atrial contraction. It originates from the SA node.",
+    source: "Marriott's Practical Electrocardiography, 12th Edition"
   },
   {
     id: 6,
-    statement: "Pneumonia can only be caused by bacteria.",
+    statement: "In obstructive lung diseases, the FEV1/FVC ratio is increased.",
     correct: false,
     category: "Pulmonology",
-    explanation:
-      "Pneumonia can be caused by various pathogens including bacteria, viruses, fungi, and parasites. Bacterial pneumonia is just one type among many.",
-    source: "Harrison's Principles of Internal Medicine",
+    explanation: "In obstructive lung diseases like COPD and asthma, FEV1 is reduced more than FVC, leading to a decreased FEV1/FVC ratio. This is a hallmark of airflow limitation.",
+    source: "Fishman's Pulmonary Diseases and Disorders, 5th Edition"
   },
   {
     id: 7,
-    statement: "The spleen is essential for survival.",
+    statement: "The jejunum is the primary site of iron absorption.",
     correct: false,
-    category: "Anatomy",
-    explanation:
-      "While the spleen performs important functions like filtering blood and immune responses, it is not essential for survival. People can live normal lives after splenectomy.",
-    source: "Robbins Basic Pathology",
+    category: "Gastroenterology",
+    explanation: "Iron is primarily absorbed in the duodenum, not the jejunum. The acidic environment and presence of specific transporters facilitate iron uptake in the proximal small intestine.",
+    source: "Sleisenger and Fordtran's Gastrointestinal and Liver Disease, 11th Edition"
   },
   {
     id: 8,
-    statement: "Hypertension is defined as blood pressure ≥140/90 mmHg.",
+    statement: "Glucagon increases blood glucose levels.",
     correct: true,
-    category: "Cardiology",
-    explanation:
-      "Hypertension is traditionally defined as systolic blood pressure ≥140 mmHg or diastolic blood pressure ≥90 mmHg, though recent guidelines have lowered this threshold.",
-    source: "American Heart Association Guidelines",
+    category: "Physiology",
+    explanation: "Glucagon, secreted by pancreatic alpha cells, stimulates glycogenolysis and gluconeogenesis in the liver, thereby increasing blood glucose levels.",
+    source: "Guyton and Hall Textbook of Medical Physiology, 14th Edition"
   },
   {
     id: 9,
-    statement: "All bones in the human body contain bone marrow.",
-    correct: false,
-    category: "Anatomy",
-    explanation:
-      "Not all bones contain bone marrow. Some bones, particularly smaller bones like those in the hands and feet, may not have significant marrow cavities.",
-    source: "Gray's Anatomy",
+    statement: "Vitamin K deficiency impairs coagulation.",
+    correct: true,
+    category: "Hematology",
+    explanation: "Vitamin K is essential for the gamma-carboxylation of clotting factors II, VII, IX, and X. Deficiency leads to impaired coagulation and increased bleeding risk.",
+    source: "Wintrobe's Clinical Hematology, 14th Edition"
   },
   {
     id: 10,
-    statement: "Aspirin can help prevent heart attacks.",
-    correct: true,
-    category: "Cardiology",
-    explanation:
-      "Low-dose aspirin has antiplatelet effects that can help prevent blood clots, reducing the risk of heart attacks in certain high-risk patients.",
-    source: "American College of Cardiology Guidelines",
+    statement: "Myasthenia gravis is caused by a deficiency of dopamine.",
+    correct: false,
+    category: "Neurology",
+    explanation: "Myasthenia gravis is an autoimmune disorder caused by antibodies against acetylcholine receptors at the neuromuscular junction, not by dopamine deficiency.",
+    source: "Adams and Victor's Principles of Neurology, 11th Edition"
   },
   {
     id: 11,
-    statement: "The appendix serves no function in the human body.",
+    statement: "A karyotype of 47,XXY indicates Turner syndrome.",
     correct: false,
-    category: "Anatomy",
-    explanation:
-      "Recent research suggests the appendix may serve as a reservoir for beneficial gut bacteria and play a role in immune function, though it's not essential for survival.",
-    source: "Journal of Evolutionary Biology",
+    category: "Genetics",
+    explanation: "47,XXY represents Klinefelter syndrome, a condition seen in males with an extra X chromosome. Turner syndrome is associated with 45,X karyotype.",
+    source: "Thompson & Thompson Genetics in Medicine, 8th Edition"
   },
   {
     id: 12,
-    statement: "Insulin is produced by the pancreas.",
+    statement: "IgG is the only immunoglobulin that crosses the placenta.",
     correct: true,
-    category: "Endocrinology",
-    explanation:
-      "Insulin is produced by beta cells in the islets of Langerhans within the pancreas. It regulates blood glucose levels by facilitating cellular glucose uptake.",
-    source: "Williams Textbook of Endocrinology",
+    category: "Immunology",
+    explanation: "IgG is the only class of immunoglobulin capable of crossing the placenta, providing passive immunity to the fetus. Other immunoglobulins, like IgM, are too large to cross.",
+    source: "Janeway's Immunobiology, 9th Edition"
   },
   {
     id: 13,
-    statement: "All vaccines contain live viruses.",
+    statement: "Bilirubin is conjugated in the spleen before excretion.",
     correct: false,
-    category: "Immunology",
-    explanation:
-      "Vaccines can contain live attenuated viruses, inactivated viruses, viral proteins, or other components. Not all vaccines contain live viruses.",
-    source: "Plotkin's Vaccines",
+    category: "Physiology",
+    explanation: "Bilirubin is conjugated in the liver, not the spleen. The spleen breaks down old red blood cells, releasing unconjugated bilirubin, which is then conjugated in the liver for excretion.",
+    source: "Ganong's Review of Medical Physiology, 26th Edition"
   },
   {
     id: 14,
-    statement: "The kidneys filter approximately 180 liters of blood daily.",
+    statement: "Hyperkalemia can cause peaked T waves on ECG.",
     correct: true,
-    category: "Nephrology",
-    explanation:
-      "The kidneys filter about 180 liters of plasma daily through the glomeruli, though most of this is reabsorbed, resulting in only 1-2 liters of urine production.",
-    source: "Brenner and Rector's The Kidney",
+    category: "Emergency Medicine",
+    explanation: "Hyperkalemia affects cardiac conduction and typically presents with tall, peaked T waves on ECG. Severe hyperkalemia can lead to fatal arrhythmias.",
+    source: "Tintinalli's Emergency Medicine, 9th Edition"
   },
   {
     id: 15,
-    statement: "Cholesterol is always harmful to health.",
-    correct: false,
+    statement: "Phenylketonuria results from a deficiency of phenylalanine hydroxylase.",
+    correct: true,
     category: "Biochemistry",
-    explanation:
-      "Cholesterol is essential for cell membrane structure, hormone production, and bile acid synthesis. Only elevated levels of certain cholesterol types (like LDL) are associated with health risks.",
+    explanation: "Phenylketonuria (PKU) is an autosomal recessive disorder caused by deficiency of the enzyme phenylalanine hydroxylase, leading to toxic accumulation of phenylalanine.",
     source: "Lehninger Principles of Biochemistry",
+  },
+  {
+    id: 16,
+    statement: "The Babinski sign is normal in infants but abnormal in adults.",
+    correct: true,
+    category: "Neurology",
+    explanation: "The Babinski sign, characterized by dorsiflexion of the big toe upon plantar stimulation, is normal in infants due to incomplete myelination of corticospinal tracts. In adults, its presence indicates an upper motor neuron lesion.",
+    source: "Adams and Victor's Principles of Neurology, 11th Edition"
+  },
+  {
+    id: 17,
+    statement: "Epinephrine is contraindicated in anaphylaxis due to its hypertensive effect.",
+    correct: false,
+    category: "Emergency Medicine",
+    explanation: "Epinephrine is the first-line treatment for anaphylaxis because it counteracts hypotension, bronchospasm, and angioedema. Its vasoconstrictive and bronchodilatory effects are life-saving in this context, despite the potential for increased blood pressure.",
+    source: "Tintinalli's Emergency Medicine, 9th Edition"
+  },
+  {
+    id: 18,
+    statement: "The primary site of lipid digestion is the large intestine.",
+    correct: false,
+    category: "Gastroenterology",
+    explanation: "Lipid digestion primarily occurs in the small intestine, especially the duodenum, facilitated by bile salts and pancreatic lipase. The large intestine mainly absorbs water and electrolytes, not fats.",
+    source: "Ganong's Review of Medical Physiology, 26th Edition"
+  },
+  {
+    id: 19,
+    statement: "Sickle cell disease results from a mutation in the beta-globin gene.",
+    correct: true,
+    category: "Genetics",
+    explanation: "Sickle cell disease is caused by a point mutation in the HBB gene encoding the beta-globin chain, where valine replaces glutamic acid at position 6. This alters hemoglobin structure, leading to sickling of red blood cells under low oxygen conditions.",
+    source: "Thompson & Thompson Genetics in Medicine, 8th Edition"
+  },
+  {
+    id: 20,
+    statement: "IgE is the predominant immunoglobulin found in mucosal secretions.",
+    correct: false,
+    category: "Immunology",
+    explanation: "IgA, not IgE, is the main immunoglobulin in mucosal secretions such as saliva, tears, and gastrointestinal fluids. IgE is primarily involved in allergic responses and defense against parasitic infections.",
+    source: "Janeway's Immunobiology, 9th Edition"
   },
 ]

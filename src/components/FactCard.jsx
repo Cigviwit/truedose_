@@ -4,6 +4,10 @@ import { motion } from "framer-motion"
 import { Clock, Zap } from "lucide-react"
 
 const FactCard = ({ fact, onAnswer, userAnswer, timeLeft, speedBonus, onContinue }) => {
+  if (!fact) {
+    return null; // Render nothing if fact is undefined
+  }
+
   const getAnswerColor = (answer) => {
     if (userAnswer === null) return "bg-blue-500 hover:bg-blue-600"
     if (userAnswer === answer) {
