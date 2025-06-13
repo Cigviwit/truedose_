@@ -3,9 +3,9 @@ import './globals.css'
 import RedirectOnRefresh from './RedirectOnRefresh';
 
 export const metadata: Metadata = {
-  title: 'v0 App',
-  description: 'Created with v0',
-  generator: 'v0.dev',
+  title: 'Truedose',
+  description: 'Truedose Application',
+  generator: 'Truedose',
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

@@ -9,8 +9,8 @@ export default defineConfig({
       registerType: "autoUpdate",
       includeAssets: ["favicon.ico", "apple-touch-icon.png", "masked-icon.svg"],
       manifest: {
-        name: "TrueDose - Med Fact Streak Game",
-        short_name: "TrueDose",
+        name: "Truedose",
+        short_name: "Truedose",
         description: "The ultimate medical fact streak game for students",
         theme_color: "#8b5cf6",
         background_color: "#1f2937",
