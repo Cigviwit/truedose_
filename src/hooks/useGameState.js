@@ -170,7 +170,7 @@ export const useGameState = (paused = false) => {
   }, [timeLeft, gameState, userAnswer, paused])
 
   const handleAnswer = useCallback(
-    (answer) => {
+    async (answer) => {
       if (userAnswer !== null) return
 
       setUserAnswer(answer)
@@ -197,7 +197,7 @@ export const useGameState = (paused = false) => {
             if (error) console.error('Error updating highest streak:', error.message);
             else setHighestStreak(streak);
           };
-          updateHighestStreak();
+          await updateHighestStreak();
         }
       }
     },

@@ -5,6 +5,7 @@ import { RotateCcw, Trophy, Target, Zap, Crown, UserPlus, Home } from "lucide-re
 import { useRouter } from 'next/navigation';
 
 const GameOverScreen = ({ streak, score, onRestart, isSubscribed, user, highestStreak }) => {
+  const router = useRouter();
   const getGameOverMessage = () => {
     if (score > 500) return "Fantastic Performance!";
     if (score > 200) return "Great Effort!";
@@ -141,7 +142,7 @@ const GameOverScreen = ({ streak, score, onRestart, isSubscribed, user, highestS
         initial={{ y: 30, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ delay: 0.9 }}
-        onClick={() => useRouter().replace('/landing')}
+        onClick={() => router.replace('/landing')}
         className="bg-gray-600 text-white px-8 py-3 rounded-xl font-bold text-base flex items-center gap-3 hover:shadow-xl hover:scale-105 transition-all duration-300 shadow-lg mt-4 flex-shrink-0"
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
