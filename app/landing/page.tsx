@@ -95,6 +95,17 @@ export default function LandingPage() {
               I'm Ready
             </span>
           </motion.button>
+
+          <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            onClick={() => router.push('/how-to-play')}
+            className="mt-4 px-8 py-4 bg-secondary text-secondary-foreground rounded-lg overflow-hidden group"
+          >
+            <span className="relative z-10 text-lg font-semibold">
+              How to Play
+            </span>
+          </motion.button>
         </motion.div>
       </div>
     </div>

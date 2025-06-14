@@ -7,8 +7,8 @@ export default function RedirectOnRefresh({ children }: { children: React.ReactN
   const pathname = usePathname();
 
   useEffect(() => {
-    // Only redirect if not on landing or game page
-    if (pathname !== '/landing' && pathname !== '/game') {
+    // Only redirect if not on landing, game or how-to-play page
+    if (pathname !== '/landing' && pathname !== '/game' && pathname !== '/how-to-play') {
       router.replace('/landing');
     }
   }, [pathname, router]);
