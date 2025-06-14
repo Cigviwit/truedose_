@@ -29,6 +29,11 @@ export default function LandingPage() {
     router.replace('/game');
   };
 
+  const handlePractice = () => {
+    sessionStorage.setItem('gameInitiated', 'true');
+    router.replace('/practice');
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-secondary flex flex-col">
       {/* Auth Modal */}
@@ -75,37 +80,62 @@ export default function LandingPage() {
             TrueDose
           </h1>
           
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onHoverStart={() => setIsHovered(true)}
-            onHoverEnd={() => setIsHovered(false)}
-            onClick={handleStart}
-            className="relative px-8 py-4 bg-primary text-primary-foreground rounded-lg overflow-hidden group"
-          >
-            <motion.span
-              initial={false}
-              animate={{
-                scale: isHovered ? 1.2 : 1,
-                opacity: isHovered ? 0.8 : 0.4,
-              }}
-              className="absolute inset-0 bg-gradient-to-r from-accent to-accent-foreground"
-            />
-            <span className="relative z-10 text-lg font-semibold">
-              I'm Ready
-            </span>
-          </motion.button>
+          <div className="flex flex-col items-center space-y-4">
+            {/* Classic Mode Button */}
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onHoverStart={() => setIsHovered(true)}
+              onHoverEnd={() => setIsHovered(false)}
+              onClick={handleStart}
+              className="relative px-8 py-4 bg-gradient-to-r from-yellow-400 to-amber-500 text-white rounded-lg overflow-hidden group shadow-lg w-full max-w-xs"
+            >
+              <motion.span
+                initial={false}
+                animate={{
+                  scale: isHovered ? 1.2 : 1,
+                  opacity: isHovered ? 0.8 : 0.4,
+                }}
+                className="absolute inset-0 bg-yellow-300 transform rotate-45 group-hover:scale-150 transition-transform duration-500 opacity-0 group-hover:opacity-100"
+                style={{ animation: 'shine 1.5s infinite' }}
+              />
+              <span className="relative z-10 text-lg font-semibold">
+                Classic Mode
+              </span>
+            </motion.button>
 
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            onClick={() => router.push('/how-to-play')}
-            className="mt-4 px-8 py-4 bg-secondary text-secondary-foreground rounded-lg overflow-hidden group"
-          >
-            <span className="relative z-10 text-lg font-semibold">
-              How to Play
-            </span>
-          </motion.button>
+            {/* Practice Mode Button */}
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={handlePractice}
+              className="relative px-8 py-4 bg-primary text-primary-foreground rounded-lg overflow-hidden group w-full max-w-xs"
+            >
+              <motion.span
+                initial={false}
+                animate={{
+                  scale: isHovered ? 1.2 : 1,
+                  opacity: isHovered ? 0.8 : 0.4,
+                }}
+                className="absolute inset-0 bg-gradient-to-r from-accent to-accent-foreground"
+              />
+              <span className="relative z-10 text-lg font-semibold">
+                Practice Mode
+              </span>
+            </motion.button>
+
+            {/* How to Play Button */}
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => router.push('/how-to-play')}
+              className="px-8 py-4 bg-secondary text-secondary-foreground rounded-lg overflow-hidden group w-full max-w-xs"
+            >
+              <span className="relative z-10 text-lg font-semibold">
+                How to Play
+              </span>
+            </motion.button>
+          </div>
         </motion.div>
       </div>
     </div>

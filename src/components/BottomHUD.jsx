@@ -29,7 +29,7 @@ const AnimatedValue = ({ value, className }) => {
   )
 }
 
-const BottomHUD = ({ streak, score, speedBonus, onPause, onQuit }) => {
+const BottomHUD = ({ streak, score, speedBonus, onPause, onQuit, isPracticeMode }) => {
   return (
     <motion.div
       initial={{ y: 100, opacity: 0 }}
@@ -70,15 +70,17 @@ const BottomHUD = ({ streak, score, speedBonus, onPause, onQuit }) => {
           </div>
         </div>
         {/* Streak */}
-        <div className="flex flex-col items-center justify-center gap-1 flex-1">
-          <div className="bg-orange-500 p-3 rounded-full shadow-lg mb-1">
-            <Flame className="text-white" size={16} />
+        {!isPracticeMode && (
+          <div className="flex flex-col items-center justify-center gap-1 flex-1">
+            <div className="bg-orange-500 p-3 rounded-full shadow-lg mb-1">
+              <Flame className="text-white" size={16} />
+            </div>
+            <div className="min-w-0">
+              <AnimatedValue value={streak} className="font-bold text-lg text-black" />
+              <div className="text-gray-600 text-xs">Streak</div>
+            </div>
           </div>
-          <div className="min-w-0">
-            <AnimatedValue value={streak} className="font-bold text-lg text-black" />
-            <div className="text-gray-600 text-xs">Streak</div>
-          </div>
-        </div>
+        )}
         {/* Score */}
         <div className="flex flex-col items-center justify-center gap-1 flex-1">
           <div className="bg-purple-600 p-3 rounded-full shadow-lg mb-1">

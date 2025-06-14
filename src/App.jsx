@@ -11,10 +11,14 @@ import SwipeContainer from "./components/SwipeContainer"
 import SubscriptionModal from "./components/SubscriptionModal"
 import { medicalFacts } from "./data/medicalFacts"
 import { useGameState } from "./hooks/useGameState"
-import { useRouter } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 
 function App() {
   const [paused, setPaused] = useState(false)
+  const router = useRouter();
+  const pathname = usePathname();
+  const isPracticeMode = pathname === '/practice';
+
   const {
     currentFactIndex,
     streak,
@@ -33,14 +37,13 @@ function App() {
     toggleSubscription,
     setShowExplanation,
     currentFact,
-  } = useGameState(paused)
+    quitGame,
+  } = useGameState(paused, isPracticeMode)
 
   const [showSubscriptionModal, setShowSubscriptionModal] = useState(false)
   const [showInstallPrompt, setShowInstallPrompt] = useState(false)
 
   const speedBonus = timeLeft > 10 ? 50 : timeLeft > 5 ? 25 : 0
-
-  const router = useRouter();
 
   const handleQuit = () => {
     router.replace('/landing');
@@ -111,13 +114,25 @@ function App() {
               backdropFilter: "blur(3px) grayscale(0.7)",
             }}
           >
-            <button
-              onClick={() => setPaused(false)}
-              className="bg-white/80 px-8 py-4 rounded-2xl text-xl font-bold shadow-2xl border border-white/40 backdrop-blur-md hover:bg-white"
-              style={{backdropFilter: 'blur(8px)'}}
-            >
-              Resume
-            </button>
+            <div className="flex flex-col space-y-4">
+              <button
+                onClick={() => setPaused(false)}
+                className="bg-white/80 px-8 py-4 rounded-2xl text-xl font-bold shadow-2xl border border-white/40 backdrop-blur-md hover:bg-white"
+                style={{backdropFilter: 'blur(8px)'}}
+              >
+                Resume
+              </button>
+              <button
+                onClick={() => {
+                  setPaused(false); // Close pause overlay
+                  quitGame(); // Trigger game quit logic
+                }}
+                className="bg-red-600/80 px-8 py-4 rounded-2xl text-xl font-bold shadow-2xl border border-red-400/40 backdrop-blur-md hover:bg-red-700"
+                style={{backdropFilter: 'blur(8px)'}}
+              >
+                Quit
+              </button>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -177,6 +192,7 @@ function App() {
               isSubscribed={isSubscribed}
               user={user}
               highestStreak={highestStreak}
+              isPracticeMode={isPracticeMode}
             />
           )}
         </AnimatePresence>
@@ -190,6 +206,7 @@ function App() {
           speedBonus={speedBonus}
           onPause={() => setPaused(true)}
           onQuit={handleQuit}
+          isPracticeMode={isPracticeMode}
         />
       )}
 

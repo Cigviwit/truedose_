@@ -4,9 +4,10 @@ import { motion } from "framer-motion"
 import { RotateCcw, Trophy, Target, Zap, Crown, UserPlus, Home } from "lucide-react"
 import { useRouter } from 'next/navigation';
 
-const GameOverScreen = ({ streak, score, onRestart, isSubscribed, user, highestStreak }) => {
+const GameOverScreen = ({ streak, score, onRestart, isSubscribed, user, highestStreak, isPracticeMode }) => {
   const router = useRouter();
   const getGameOverMessage = () => {
+    if (isPracticeMode) return "Practice Session Complete!";
     if (score > 500) return "Fantastic Performance!";
     if (score > 200) return "Great Effort!";
     return "You can do better!";
@@ -37,7 +38,7 @@ const GameOverScreen = ({ streak, score, onRestart, isSubscribed, user, highestS
         transition={{ delay: 0.2 }}
         className="mb-3 flex-shrink-0"
       >
-        <h1 className="text-white text-2xl sm:text-3xl font-black mb-1">Game Over!</h1>
+        <h1 className="text-white text-2xl sm:text-3xl font-black mb-1">{isPracticeMode ? "Session Ended" : "Game Over!"}</h1>
         <p className="text-white text-base font-semibold">{getGameOverMessage()}</p>
       </motion.div>
 
@@ -46,64 +47,78 @@ const GameOverScreen = ({ streak, score, onRestart, isSubscribed, user, highestS
         initial={{ scale: 0.9, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ delay: 0.4 }}
-        className="bg-white/30 rounded-3xl p-6 mb-4 w-full max-w-xs shadow-2xl flex-shrink-0 border border-white/40 backdrop-blur-2xl"
+        className={`bg-white/30 rounded-3xl p-6 mb-4 w-full shadow-2xl flex-shrink-0 border border-white/40 backdrop-blur-2xl ${isPracticeMode ? 'max-w-md' : 'max-w-xs'}`}
         style={{
           boxShadow: '0 12px 48px 0 rgba(31, 38, 135, 0.22)',
-          border: '2px solid rgba(255,255,255,0.25)',
-          backdropFilter: 'blur(18px) saturate(180%)',
         }}
       >
-        <div className="space-y-4">
-          {/* Streak */}
-          <div className="text-center">
-            <div className="flex items-center justify-center mb-2">
-              <div className={`${getStreakColor()} p-3 rounded-full shadow-lg`}>
-                <Trophy className="text-white" size={20} />
-              </div>
-            </div>
-            <div className="text-gray-600 text-sm font-semibold mb-1">Final Streak</div>
-            <div className="text-3xl font-black text-gray-900 mb-1">{streak}</div>
-            <div className="text-sm font-bold text-gray-800">{getStreakMotivation()}</div>
-          </div>
-
-          {/* Score & Performance */}
-          <div className="grid grid-cols-2 gap-4">
+        {isPracticeMode ? (
+          // Practice Mode Stats Card Content (Only Score)
+          <div className="flex flex-col items-center justify-center space-y-4">
             <div className="text-center">
               <div className="flex items-center justify-center mb-1">
                 <div className="bg-purple-600 p-3 rounded-full shadow-lg">
-                  <Target className="text-white" size={16} />
+                  <Target className="text-white" size={20} />
                 </div>
               </div>
               <div className="text-gray-600 text-sm font-semibold mb-1">Score</div>
-              <div className="text-xl font-black text-gray-900">{score.toLocaleString()}</div>
-            </div>
-
-            <div className="text-center">
-              <div className="flex items-center justify-center mb-1">
-                <div className="bg-green-500 p-3 rounded-full shadow-lg">
-                  <Zap className="text-white" size={16} />
-                </div>
-              </div>
-              <div className="text-gray-600 text-sm font-semibold mb-1">Highest Streak</div>
-              <div className="text-xl font-bold text-gray-800">
-                {user ? (
-                  highestStreak !== null ? (
-                    highestStreak
-                  ) : (
-                    "N/A"
-                  )
-                ) : (
-                  <UserPlus size={16} className="inline-block text-blue-500 mr-1" />
-                )}
-              </div>
-              {!user && (
-                <p className="text-xs text-blue-500 mt-1 font-semibold">
-                  Sign up to save!
-                </p>
-              )}
+              <div className="text-4xl font-black text-gray-900">{score.toLocaleString()}</div>
             </div>
           </div>
-        </div>
+        ) : (
+          // Classic Mode Stats Card Content (Streak and Score)
+          <div className="space-y-4">
+            {/* Streak */}
+            <div className="text-center">
+              <div className="flex items-center justify-center mb-2">
+                <div className={`${getStreakColor()} p-3 rounded-full shadow-lg`}>
+                  <Trophy className="text-white" size={20} />
+                </div>
+              </div>
+              <div className="text-gray-600 text-sm font-semibold mb-1">Final Streak</div>
+              <div className="text-3xl font-black text-gray-900 mb-1">{streak}</div>
+              <div className="text-sm font-bold text-gray-800">{getStreakMotivation()}</div>
+            </div>
+
+            {/* Score & Performance */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="text-center">
+                <div className="flex items-center justify-center mb-1">
+                  <div className="bg-purple-600 p-3 rounded-full shadow-lg">
+                    <Target className="text-white" size={16} />
+                  </div>
+                </div>
+                <div className="text-gray-600 text-sm font-semibold mb-1">Score</div>
+                <div className="text-xl font-black text-gray-900">{score.toLocaleString()}</div>
+              </div>
+
+              <div className="text-center">
+                <div className="flex items-center justify-center mb-1">
+                  <div className="bg-green-500 p-3 rounded-full shadow-lg">
+                    <Zap className="text-white" size={16} />
+                  </div>
+                </div>
+                <div className="text-gray-600 text-sm font-semibold mb-1">Highest Streak</div>
+                <div className="text-xl font-bold text-gray-800">
+                  {user ? (
+                    highestStreak !== null ? (
+                      highestStreak
+                    ) : (
+                      "N/A"
+                    )
+                  ) : (
+                    <UserPlus size={16} className="inline-block text-blue-500 mr-1" />
+                  )}
+                </div>
+                {!user && (
+                  <p className="text-xs text-blue-500 mt-1 font-semibold">
+                    Sign up to save!
+                  </p>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
       </motion.div>
 
       {/* Motivational Message */}
@@ -114,7 +129,7 @@ const GameOverScreen = ({ streak, score, onRestart, isSubscribed, user, highestS
           transition={{ delay: 0.6 }}
           className="mb-3 text-center flex-shrink-0 bg-white/20 rounded-xl p-3 border border-white/30 backdrop-blur-md shadow-md"
         >
-          <p className="text-white text-sm mb-1 font-semibold">
+          <p className="text-gray-600 text-sm mb-1 font-semibold">
             <Crown className="inline-block text-yellow-300 mr-1" size={16} />
             Unlock detailed analytics and more with Premium!
           </p>

@@ -22,7 +22,7 @@ const shuffleArray = (array) => {
   return array;
 };
 
-export const useGameState = (paused = false) => {
+export const useGameState = (paused = false, isPracticeMode = false) => {
   const [currentFactIndex, setCurrentFactIndex] = useState(0)
   const [streak, setStreak] = useState(0)
   const [score, setScore] = useState(0)
@@ -183,29 +183,33 @@ export const useGameState = (paused = false) => {
         const newScore = score + basePoints + speedBonus
 
         setScore(newScore)
-        setStreak((prev) => prev + 1)
+        if (!isPracticeMode) {
+          setStreak((prev) => prev + 1)
+        }
       } else {
-        setGameOverTriggered(true);
         setShowExplanation(true);
-        // Update highest streak on game over if user is logged in and new streak is higher
-        if (user && streak > highestStreak) {
-          const updateHighestStreak = async () => {
-            const { error } = await supabase
-              .from('profiles')
-              .update({ highest_streak: streak })
-              .eq('id', user.id);
-            if (error) console.error('Error updating highest streak:', error.message);
-            else setHighestStreak(streak);
-          };
-          await updateHighestStreak();
+        if (!isPracticeMode) {
+          setGameOverTriggered(true);
+          // Update highest streak on game over if user is logged in and new streak is higher
+          if (user && streak > highestStreak) {
+            const updateHighestStreak = async () => {
+              const { error } = await supabase
+                .from('profiles')
+                .update({ highest_streak: streak })
+                .eq('id', user.id);
+              if (error) console.error('Error updating highest streak:', error.message);
+              else setHighestStreak(streak);
+            };
+            await updateHighestStreak();
+          }
         }
       }
     },
-    [userAnswer, currentFactIndex, timeLeft, score, user, streak, highestStreak, shuffledFactIds],
+    [userAnswer, currentFactIndex, timeLeft, score, user, streak, highestStreak, shuffledFactIds, isPracticeMode],
   )
 
   const nextFact = useCallback(() => {
-    if (gameOverTriggered) {
+    if (gameOverTriggered && !isPracticeMode) {
       setGameState("gameOver");
       setGameOverTriggered(false);
     } else {
@@ -235,7 +239,7 @@ export const useGameState = (paused = false) => {
     setUserAnswer(null);
     setTimeLeft(15);
     setShowExplanation(false);
-  }, [currentFactIndex, shuffledFactIds, playedFactIds, gameOverTriggered]);
+  }, [currentFactIndex, shuffledFactIds, playedFactIds, gameOverTriggered, isPracticeMode]);
 
   const resetGame = useCallback(() => {
     const today = new Date().toDateString();
@@ -273,7 +277,7 @@ export const useGameState = (paused = false) => {
     setGameState("playing")
     setUserAnswer(null)
     setShowExplanation(false)
-  }, [])
+  }, [isSubscribed])
 
   const toggleSubscription = useCallback(() => {
     setIsSubscribed((prev) => !prev)
@@ -285,9 +289,27 @@ export const useGameState = (paused = false) => {
     }
   }, [isSubscribed])
 
+  const quitGame = useCallback(() => {
+    setGameState("gameOver");
+    if (!isPracticeMode) {
+      // For classic mode, save highest streak on quit if applicable
+      if (user && streak > highestStreak) {
+        const updateHighestStreak = async () => {
+          const { error } = await supabase
+            .from('profiles')
+            .update({ highest_streak: streak })
+            .eq('id', user.id);
+          if (error) console.error('Error updating highest streak:', error.message);
+          else setHighestStreak(streak);
+        };
+        updateHighestStreak();
+      }
+    }
+  }, [user, streak, highestStreak, isPracticeMode]);
+
   return {
     currentFact: medicalFacts.find(fact => fact.id === shuffledFactIds[currentFactIndex]),
-    streak,
+    streak: isPracticeMode ? 0 : streak,
     score,
     timeLeft,
     gameState,
@@ -304,5 +326,6 @@ export const useGameState = (paused = false) => {
     setShowExplanation,
     incrementDailyExplanations,
     gameOverTriggered,
+    quitGame,
   }
 }
