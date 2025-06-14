@@ -60,13 +60,13 @@ const BottomHUD = ({ streak, score, speedBonus, onPause, onQuit }) => {
         <div className="flex flex-col items-center justify-center gap-1 flex-1">
           <button
             onClick={onQuit}
-            className="bg-red-500 p-3 rounded-full shadow-lg mb-1 hover:bg-red-700 transition-colors"
-            aria-label="Quit"
+            className="bg-gray-700 p-3 rounded-full shadow-lg mb-1 hover:bg-gray-900 transition-colors"
+            aria-label="Home"
           >
             <Home className="text-white" size={20} />
           </button>
           <div className="min-w-0">
-            <div className="text-gray-600 text-xs">Quit</div>
+            <div className="text-gray-600 text-xs">Home</div>
           </div>
         </div>
         {/* Streak */}
