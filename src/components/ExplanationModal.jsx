@@ -20,7 +20,6 @@ const ExplanationModal = ({ isOpen, onClose, fact, onNext, onExplanationRequest,
   }
 
   const handleContinue = () => {
-    onClose()
     onNext()
   }
 

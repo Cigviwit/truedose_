@@ -36,6 +36,7 @@ export const useGameState = (paused = false) => {
   const [highestStreak, setHighestStreak] = useState(null)
   const [shuffledFactIds, setShuffledFactIds] = useState([])
   const [playedFactIds, setPlayedFactIds] = useState([])
+  const [gameOverTriggered, setGameOverTriggered] = useState(false)
 
   // Load user and highest streak
   useEffect(() => {
@@ -184,7 +185,8 @@ export const useGameState = (paused = false) => {
         setScore(newScore)
         setStreak((prev) => prev + 1)
       } else {
-        setGameState("gameOver")
+        setGameOverTriggered(true);
+        setShowExplanation(true);
         // Update highest streak on game over if user is logged in and new streak is higher
         if (user && streak > highestStreak) {
           const updateHighestStreak = async () => {
@@ -203,32 +205,37 @@ export const useGameState = (paused = false) => {
   )
 
   const nextFact = useCallback(() => {
-    // Add current fact to played facts
-    setPlayedFactIds(prev => [...prev, shuffledFactIds[currentFactIndex]]);
-
-    if (currentFactIndex >= shuffledFactIds.length - 1) {
-      // If all facts in the current shuffled list are exhausted
-      const remainingFactIds = medicalFacts
-        .filter(fact => !playedFactIds.includes(fact.id))
-        .map(fact => fact.id);
-
-      if (remainingFactIds.length === 0) {
-        // All facts ever played, reset played facts for a new cycle
-        localStorage.setItem("truedose_played_fact_ids", JSON.stringify([]));
-        setPlayedFactIds([]);
-        setShuffledFactIds(shuffleArray(medicalFacts.map(fact => fact.id)));
-      } else {
-        // Shuffle remaining unplayed facts for the rest of the day
-        setShuffledFactIds(shuffleArray(remainingFactIds));
-      }
-      setCurrentFactIndex(0); // Reset index to start of new shuffled list
+    if (gameOverTriggered) {
+      setGameState("gameOver");
+      setGameOverTriggered(false);
     } else {
-      setCurrentFactIndex((prev) => prev + 1);
+      // Add current fact to played facts (only for correct answers, or if explanation was force-shown)
+      setPlayedFactIds(prev => [...prev, shuffledFactIds[currentFactIndex]]);
+
+      if (currentFactIndex >= shuffledFactIds.length - 1) {
+        // If all facts in the current shuffled list are exhausted
+        const remainingFactIds = medicalFacts
+          .filter(fact => !playedFactIds.includes(fact.id))
+          .map(fact => fact.id);
+
+        if (remainingFactIds.length === 0) {
+          // All facts ever played, reset played facts for a new cycle
+          localStorage.setItem("truedose_played_fact_ids", JSON.stringify([]));
+          setPlayedFactIds([]);
+          setShuffledFactIds(shuffleArray(medicalFacts.map(fact => fact.id)));
+        } else {
+          // Shuffle remaining unplayed facts for the rest of the day
+          setShuffledFactIds(shuffleArray(remainingFactIds));
+        }
+        setCurrentFactIndex(0); // Reset index to start of new shuffled list
+      } else {
+        setCurrentFactIndex((prev) => prev + 1);
+      }
     }
     setUserAnswer(null);
     setTimeLeft(15);
     setShowExplanation(false);
-  }, [currentFactIndex, shuffledFactIds, playedFactIds]);
+  }, [currentFactIndex, shuffledFactIds, playedFactIds, gameOverTriggered]);
 
   const resetGame = useCallback(() => {
     const today = new Date().toDateString();
@@ -296,5 +303,6 @@ export const useGameState = (paused = false) => {
     toggleSubscription,
     setShowExplanation,
     incrementDailyExplanations,
+    gameOverTriggered,
   }
 }
