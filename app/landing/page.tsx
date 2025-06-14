@@ -61,9 +61,14 @@ export default function LandingPage() {
               </motion.button>
             </>
           ) : (
-            <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-bold text-lg">
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => router.push('/profile')}
+              className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-bold text-lg"
+            >
               {user.email ? user.email[0].toUpperCase() : 'U'}
-            </div>
+            </motion.button>
           )}
         </div>
       </nav>

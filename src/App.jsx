@@ -114,11 +114,10 @@ function App() {
               backdropFilter: "blur(3px) grayscale(0.7)",
             }}
           >
-            <div className="flex flex-col space-y-4">
+            <div className="flex flex-col space-y-4 items-center">
               <button
                 onClick={() => setPaused(false)}
-                className="bg-white/80 px-8 py-4 rounded-2xl text-xl font-bold shadow-2xl border border-white/40 backdrop-blur-md hover:bg-white"
-                style={{backdropFilter: 'blur(8px)'}}
+                className="bg-white px-8 py-4 rounded-xl text-lg font-bold shadow-lg hover:bg-gray-100 transition-colors duration-200"
               >
                 Resume
               </button>
@@ -127,8 +126,7 @@ function App() {
                   setPaused(false); // Close pause overlay
                   quitGame(); // Trigger game quit logic
                 }}
-                className="bg-red-600/80 px-8 py-4 rounded-2xl text-xl font-bold shadow-2xl border border-red-400/40 backdrop-blur-md hover:bg-red-700"
-                style={{backdropFilter: 'blur(8px)'}}
+                className="bg-red-500 text-white px-8 py-4 rounded-xl text-lg font-bold shadow-lg hover:bg-red-600 transition-colors duration-200"
               >
                 Quit
               </button>
