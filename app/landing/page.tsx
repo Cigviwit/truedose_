@@ -59,9 +59,9 @@ export default function LandingPage() {
           {user && (
             <div className="flex items-center space-x-3 p-2 bg-gray-700 rounded-md mb-4">
               <div className="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-bold text-lg">
-                {user.email ? user.email[0].toUpperCase() : 'U'}
+                {user.user_metadata?.full_name ? user.user_metadata.full_name[0].toUpperCase() : user.email ? user.email[0].toUpperCase() : 'U'}
               </div>
-              <span className="text-lg font-semibold">{user.email}</span>
+              <span className="text-lg font-semibold">{user.user_metadata?.full_name || user.email}</span>
             </div>
           )}
           <motion.button
