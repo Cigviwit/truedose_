@@ -10,6 +10,8 @@ interface AuthModalProps {
 export default function AuthModal({ open, onClose, mode }: AuthModalProps) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
@@ -24,7 +26,18 @@ export default function AuthModal({ open, onClose, mode }: AuthModalProps) {
       if (error) setError(error.message);
       else setSuccess('Signed in!');
     } else {
-      const { error } = await supabase.auth.signUp({ email, password });
+      const fullName = `${firstName} ${lastName}`.trim();
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            first_name: firstName,
+            last_name: lastName,
+            full_name: fullName,
+          },
+        },
+      });
       if (error) setError(error.message);
       else setSuccess('Sign up successful!');
     }
@@ -39,6 +52,26 @@ export default function AuthModal({ open, onClose, mode }: AuthModalProps) {
         <button onClick={onClose} className="absolute top-3 right-3 text-gray-400 hover:text-gray-700 text-xl">×</button>
         <h2 className="text-2xl font-bold mb-4 text-center">{mode === 'sign-in' ? 'Sign In' : 'Sign Up'}</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
+          {mode === 'sign-up' && (
+            <>
+              <input
+                type="text"
+                placeholder="First Name"
+                value={firstName}
+                onChange={e => setFirstName(e.target.value)}
+                required
+                className="w-full px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary"
+              />
+              <input
+                type="text"
+                placeholder="Last Name"
+                value={lastName}
+                onChange={e => setLastName(e.target.value)}
+                required
+                className="w-full px-4 py-2 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary"
+              />
+            </>
+          )}
           <input
             type="email"
             placeholder="Email"
